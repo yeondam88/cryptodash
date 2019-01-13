@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { toProperCase } from "../utils";
+import { AppContext } from "./AppProvider";
 
 const Logo = styled.div`
   font-size: 1.5em;
@@ -21,9 +22,15 @@ const ControlButtonElem = styled.div`
     `}
 `;
 
-function ControlButton({ name, active }) {
+function ControlButton({ name }) {
   return (
-    <ControlButtonElem active={active}>{toProperCase(name)}</ControlButtonElem>
+    <AppContext.Consumer>
+      {({ page, setPage }) => (
+        <ControlButtonElem active={page === name} onClick={() => setPage(name)}>
+          {toProperCase(name)}
+        </ControlButtonElem>
+      )}
+    </AppContext.Consumer>
   );
 }
 
@@ -32,7 +39,7 @@ const AppBar = () => {
     <Bar>
       <Logo>CryptoDash</Logo>
       <div />
-      <ControlButton active name="dashboard" />
+      <ControlButton name="dashboard" />
       <ControlButton name="settings" />
     </Bar>
   );
