@@ -5,7 +5,8 @@ import Page from "../Shared/Page";
 
 const Settings = () => (
   <Page name="settings">
-    <WelcomeMessage /> <ConfirmButton />
+    <WelcomeMessage />
+    <ConfirmButton />
   </Page>
 );
 
