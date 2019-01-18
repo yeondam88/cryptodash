@@ -9,6 +9,10 @@ const JustifyRight = styled.div`
   justify-self: right;
 `;
 
+const JustifyLeft = styled.div`
+  justify-self: left;
+`;
+
 const TickerPrice = styled.div`
   ${fontSizeBig}
 `;
@@ -26,7 +30,11 @@ const PriceTileStyled = styled(SelectableTile)`
   ${props =>
     props.compact &&
     css`
+      display: grid;
+      grid-gap: 5px;
       ${fontSize3}
+      grid-template-columns: repeat(3, 1fr);
+      justify-items: right;
     `}
 `;
 
@@ -35,6 +43,9 @@ const PriceTileWrapper = ({ sym, data }) => {
     <PriceTileStyled>
       <CoinHeaderGridStyled>
         <div>{sym}</div>
+        <JustifyRight>
+          <ChangePercentWrapper data={data} />
+        </JustifyRight>
       </CoinHeaderGridStyled>
       <TickerPrice>${numberFormat(data.PRICE)}</TickerPrice>
     </PriceTileStyled>
@@ -51,10 +62,21 @@ const ChangePercentWrapper = ({ data }) => {
   );
 };
 
+const PriceTileCompact = ({ sym, data }) => {
+  return (
+    <PriceTileStyled compact>
+      <JustifyLeft>{sym}</JustifyLeft>
+      <ChangePercentWrapper data={data} />
+      <div>${numberFormat(data.PRICE)}</div>
+    </PriceTileStyled>
+  );
+};
+
 const PriceTile = ({ price, index }) => {
   let sym = Object.keys(price)[0];
   let data = price[sym]["USD"];
-  return <PriceTileWrapper sym={sym} data={data} />;
+  let TileClass = index < 5 ? PriceTileWrapper : PriceTileCompact;
+  return <TileClass sym={sym} data={data} />;
 };
 
 export default PriceTile;
